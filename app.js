@@ -10,8 +10,15 @@ var productRouter = require('./routes/product-controller');
 var employeeRouter = require('./routes/employee-controller');
 var stockRouter = require('./routes/stock-controller');
 var appconfigRouter = require('./routes/appconfig-controller');
+var warehouseRouter = require('./routes/warehouse-controller');
+var customerRouter = require('./routes/customer-controller');
+var vanRouter = require('./routes/van-controller');
+var shipmentRouter = require('./routes/shipment-controller');
 
 var app = express();
+
+const swaggerUi = require('swagger-ui-express');
+swaggerDocument = require('./swagger.json');
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -29,6 +36,13 @@ app.use('/product', productRouter);
 app.use('/employee', employeeRouter);
 app.use('/stock', stockRouter);
 app.use('/appconfig', appconfigRouter);
+app.use('/warehouse', warehouseRouter);
+app.use('/customer', customerRouter);
+app.use('/van', vanRouter);
+app.use('/shipment', shipmentRouter);
+
+
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

@@ -1,0 +1,49 @@
+var pool = require('./db');
+var _ = require('underscore');
+
+const GET_WAREHOUSE = 'SELECT * FROM "WAREHOUSE_DETAILS"';
+const GET_WAREHOUSE_BY_ID = 'SELECT * FROM "WAREHOUSE_DETAILS" WHERE "WAREHOUSE_ID"=$1';
+const ADD_WAREHOUSE = 'INSERT INTO "WAREHOUSE_DETAILS" ("WAREHOUSE_NAME","WAREHOUSE_ADDRESS","WAREHOUSE_CONTACT","ACTIVE_STATUS") VALUES ($1,$2,$3,$4)';
+const UPDATE_WAREHOUSE = 'UPDATE "WAREHOUSE_DETAILS" SET "WAREHOUSE_NAME"=$2,"WAREHOUSE_ADDRESS"=$3,"WAREHOUSE_CONTACT"=$4,"ACTIVE_STATUS"=$5 WHERE "WAREHOUSE_ID"=$1';
+
+module.exports.getAllWarehouse = (callback) => {
+  pool.query(GET_WAREHOUSE, (error, results) => {
+    if (error) {
+      throw error
+    }
+    callback(results.rows)
+  });
+};
+
+module.exports.getWarehouseById = (id, callback) => {
+  if (id != null && id != undefined && id != "") {
+    pool.query(GET_WAREHOUSE_BY_ID, [id], (error, results) => {
+      if (error) {
+        throw error
+      }
+      callback(results.rows)
+    });
+  }
+};
+
+module.exports.addWarehouse = (warehouseObj, callback) => {
+  if (warehouseObj != null && warehouseObj != undefined && warehouseObj != "") {
+    pool.query(ADD_WAREHOUSE, [warehouseObj.WAREHOUSE_NAME,warehouseObj.WAREHOUSE_ADDRESS,warehouseObj.WAREHOUSE_CONTACT,warehouseObj.ACTIVE_STATUS], (error, results) => {
+      if (error) {
+        throw error
+      }
+      callback(results.rows)
+    });
+  }
+};
+
+module.exports.updateWarehouse = (id,warehouseObj, callback) => {
+  if (warehouseObj != null && warehouseObj != undefined && warehouseObj != "") {
+    pool.query(UPDATE_WAREHOUSE, [id,warehouseObj.WAREHOUSE_NAME,warehouseObj.WAREHOUSE_ADDRESS,warehouseObj.WAREHOUSE_CONTACT,warehouseObj.ACTIVE_STATUS], (error, results) => {
+      if (error) {
+        throw error
+      }
+      callback(results.rows)
+    });
+  }
+};

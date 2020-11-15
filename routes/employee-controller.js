@@ -25,10 +25,11 @@ router.post('/', function (req, res, next) {
 });
 
 /* UPDATE EMPLOYEE */
-router.put('/', function (req, res, next) {
+router.put('/:id', function (req, res, next) {
     var empObj = req.body;
+    var empId=req.params.id;
     if (empObj != null && empObj != undefined && empObj != "") {
-        employee.updateEmployee(empObj, (results) => { res.status(204).json(results) });
+        employee.updateEmployee(empId,empObj, (results) => { res.status(204).json(results) });
     }
 });
 

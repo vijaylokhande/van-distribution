@@ -25,10 +25,12 @@ router.post('/', function (req, res, next) {
 });
 
 /* UPDATE PRODUCT */
-router.put('/', function (req, res, next) {
+router.put('/:id', function (req, res, next) {
   var productObj = req.body;
-  if (productObj != null && productObj != undefined && productObj != "") {
-    product.updateProduct(productObj, (results) => { res.status(204).json(results) });
+  var productId=req.params.id;
+  if (productObj != null && productObj != undefined && productObj != "" &&
+      productId != null && productId != undefined && productId != "") {
+    product.updateProduct(productId,productObj, (results) => { res.status(204).json(results) });
   }
 });
 
