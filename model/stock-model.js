@@ -1,10 +1,11 @@
 var pool = require('./db');
 var _ = require('underscore');
+var util = require('../util/util');
 
-const GET_STOCK = 'SELECT * FROM "APP_CONFIG"';
-const GET_STOCK_BY_ID = 'SELECT * FROM "APP_CONFIG" WHERE "PROPERTY_TYPE"=$1';
-const ADD_STOCK = 'SELECT * FROM "APP_CONFIG" WHERE "PROPERTY_TYPE"=$1';
-const UPDATE_STOCK = 'SELECT * FROM "APP_CONFIG" WHERE "PROPERTY_TYPE"=$1';
+const GET_STOCK = 'SELECT * FROM "WAREHOUSE_PRODUCT_STOCK"';
+const GET_STOCK_BY_ID = 'SELECT * FROM "WAREHOUSE_PRODUCT_STOCK" WHERE "SKU_ID"=$1';
+const ADD_STOCK = 'INSERT INTO "WAREHOUSE_PRODUCT_STOCK" ("WPS_PRODUCT_ID","WPS_PRODUCT_QUANTITY","RACK_NUMBER","CREATED_DATE","CREATED_TIME","UPDATED_DATE","UPDATED_TIME","ACTIVE_STATUS") VALUES ($1,$2,$3,$4,$5,$6,$7,$8) RETURNING "SKU_ID" "WPS_PRODUCT_ID","WPS_PRODUCT_QUANTITY","RACK_NUMBER","CREATED_DATE","CREATED_TIME","UPDATED_DATE","UPDATED_TIME","ACTIVE_STATUS"';
+const UPDATE_STOCK = 'UPDATE "WAREHOUSE_PRODUCT_STOCK" SET "WPS_PRODUCT_ID"=$2,"WPS_PRODUCT_QUANTITY"=$3,"RACK_NUMBER"=$4,UPDATED_DATE"=$5,"UPDATED_TIME"=$6,"ACTIVE_STATUS"=$7 WHERE "SKU_ID"=$1 RETURNING "SKU_ID" "WPS_PRODUCT_ID","WPS_PRODUCT_QUANTITY","RACK_NUMBER","CREATED_DATE","CREATED_TIME","UPDATED_DATE","UPDATED_TIME","ACTIVE_STATUS"';
 
 module.exports.getAllStock = (callback) => {
   pool.query(GET_STOCK, (error, results) => {
@@ -28,22 +29,57 @@ module.exports.getStockById = (id, callback) => {
 
 module.exports.addStock = (stockObj, callback) => {
   if (stockObj != null && stockObj != undefined && stockObj != "") {
-    pool.query(ADD_STOCK, [stockObj], (error, results) => {
-      if (error) {
-        throw error
-      }
-      callback(results.rows)
-    });
+
+    var datetime = util.getCurrentDateTime();
+
+    if (datetime != undefined && datetime != null && datetime != "") {
+
+      var dataArray = [
+        stockObj.WPS_PRODUCT_ID,
+        stockObj.WPS_PRODUCT_QUANTITY,
+        stockObj.RACK_NUMBER,
+        datetime["date"],
+        datetime["time"],
+        datetime["date"],
+        datetime["time"],
+        stockObj.ACTIVE_STATUS
+      ];
+
+
+      pool.query(ADD_STOCK, dataArray, (error, results) => {
+        if (error) {
+          throw error
+        }
+        callback(results.rows)
+      });
+    }
   }
 };
 
-module.exports.updateStock = (stockObj, callback) => {
-  if (stockObj != null && stockObj != undefined && stockObj != "") {
-    pool.query(UPDATE_STOCK, [stockObj], (error, results) => {
-      if (error) {
-        throw error
-      }
-      callback(results.rows)
-    });
+module.exports.updateStock = (skuId, stockObj, callback) => {
+  if (stockObj != null && stockObj != undefined && stockObj != "" &&
+    skuId != null && skuId != undefined && skuId != "") {
+
+    var datetime = util.getCurrentDateTime();
+
+    if (datetime != undefined && datetime != null && datetime != "") {
+
+      var dataArray = [
+        skuId,
+        stockObj.WPS_PRODUCT_ID,
+        stockObj.WPS_PRODUCT_QUANTITY,
+        stockObj.RACK_NUMBER,
+        datetime["date"],
+        datetime["time"],
+        stockObj.ACTIVE_STATUS
+      ];
+
+      pool.query(UPDATE_STOCK, dataArray, (error, results) => {
+        if (error) {
+          throw error
+        }
+        callback(results.rows)
+      });
+    }
   }
 };

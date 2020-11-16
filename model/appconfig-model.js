@@ -3,8 +3,8 @@ var _ = require('underscore');
 
 const GET_KEY_VAL = 'SELECT * FROM "APP_CONFIG"';
 const GET_KEY_VAL_BY_TYPE = 'SELECT * FROM "APP_CONFIG" WHERE "PROPERTY_TYPE"=$1';
-const ADD_KEY_VAL = 'INSERT INTO "APP_CONFIG" ("PROPERTY_TYPE","PROPERTY_VALUE") VALUES ($1,$2)';
-const UPDATE_KEY_VAL = 'UPDATE "APP_CONFIG" SET "PROPERTY_TYPE"=$2,"PROPERTY_VALUE"=$3 WHERE "PROPERTY_ID"=$1';
+const ADD_KEY_VAL = 'INSERT INTO "APP_CONFIG" ("PROPERTY_TYPE","PROPERTY_VALUE") VALUES ($1,$2) RETURNING "PROPERTY_ID","PROPERTY_TYPE","PROPERTY_VALUE","ACTIVE_STATUS"';
+const UPDATE_KEY_VAL = 'UPDATE "APP_CONFIG" SET "PROPERTY_TYPE"=$2,"PROPERTY_VALUE"=$3 WHERE "PROPERTY_ID"=$1 RETURNING "PROPERTY_ID","PROPERTY_TYPE","PROPERTY_VALUE","ACTIVE_STATUS"';
 const DELETE_BY_ID = 'DELETE FROM "APP_CONFIG" WHERE "PROPERTY_ID"=$1';
 
 
@@ -39,9 +39,10 @@ module.exports.addKeyVal = (keyValObj, callback) => {
     }
 };
 
-module.exports.updateKeyVal = (keyValObj, callback) => {
-    if (keyValObj != null && keyValObj != undefined && keyValObj != "") {
-        pool.query(UPDATE_KEY_VAL, [keyValObj.PROPERTY_ID,keyValObj.PROPERTY_TYPE,keyValObj.PROPERTY_VALUE], (error, results) => {
+module.exports.updateKeyVal = (id,keyValObj, callback) => {
+    if (keyValObj != null && keyValObj != undefined && keyValObj != "" && 
+        id != null && id != undefined && id != "") {
+        pool.query(UPDATE_KEY_VAL, [id,keyValObj.PROPERTY_TYPE,keyValObj.PROPERTY_VALUE], (error, results) => {
             if (error) {
                 throw error
             }

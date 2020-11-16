@@ -27,10 +27,10 @@ router.post('/', function (req, res, next) {
 /* UPDATE van */
 router.put('/:id', function (req, res, next) {
     var vanObj = req.body;
-    var vanId=req.params.id;
+    var vanId = req.params.id;
     if (vanObj != null && vanObj != undefined && vanObj != "" &&
         vanId != null && vanId != undefined && vanId != "") {
-        van.updateVan(vanId,vanObj, (results) => { res.status(204).json(results) });
+        van.updateVan(vanId, vanObj, (results) => { res.status(204).json(results) });
     }
 });
 

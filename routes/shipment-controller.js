@@ -27,9 +27,9 @@ router.post('/', function (req, res, next) {
 /* UPDATE Shipment */
 router.put('/:id', function (req, res, next) {
     var shipmentObj = req.body;
-    var shipmentId=req.params.id;
+    var shipmentId = req.params.id;
     if (shipmentObj != null && shipmentObj != undefined && shipmentObj != "") {
-        shipment.updateShipment(shipmentId,shipmentObj, (results) => { res.status(204).json(results) });
+        shipment.updateShipment(shipmentId, shipmentObj, (results) => { res.status(200).json(results) });
     }
 });
 

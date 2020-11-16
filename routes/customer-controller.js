@@ -27,10 +27,10 @@ router.post('/', function (req, res, next) {
 /* UPDATE CUSTOMER */
 router.put('/:id', function (req, res, next) {
   var customerObj = req.body;
-  var customerId=req.params.id;
+  var customerId = req.params.id;
   if (customerObj != null && customerObj != undefined && customerObj != "" &&
-      customerId != null && customerId != undefined && customerId != "") {
-    customer.updateCustomer(customerId,customerObj, (results) => { res.status(204).json(results) });
+    customerId != null && customerId != undefined && customerId != "") {
+    customer.updateCustomer(customerId, customerObj, (results) => { res.status(204).json(results) });
   }
 });
 

@@ -31,16 +31,15 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
-app.use('/user', userRouter);
-app.use('/product', productRouter);
-app.use('/employee', employeeRouter);
-app.use('/stock', stockRouter);
-app.use('/appconfig', appconfigRouter);
-app.use('/warehouse', warehouseRouter);
-app.use('/customer', customerRouter);
-app.use('/van', vanRouter);
-app.use('/shipment', shipmentRouter);
-
+app.use('/api/user', userRouter);
+app.use('/api/product', productRouter);
+app.use('/api/employee', employeeRouter);
+app.use('/api/stock', stockRouter);
+app.use('/api/appconfig', appconfigRouter);
+app.use('/api/warehouse', warehouseRouter);
+app.use('/api/customer', customerRouter);
+app.use('/api/van', vanRouter);
+app.use('/api/shipment', shipmentRouter);
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 

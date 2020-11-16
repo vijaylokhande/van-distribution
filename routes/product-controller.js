@@ -27,10 +27,10 @@ router.post('/', function (req, res, next) {
 /* UPDATE PRODUCT */
 router.put('/:id', function (req, res, next) {
   var productObj = req.body;
-  var productId=req.params.id;
+  var productId = req.params.id;
   if (productObj != null && productObj != undefined && productObj != "" &&
-      productId != null && productId != undefined && productId != "") {
-    product.updateProduct(productId,productObj, (results) => { res.status(204).json(results) });
+    productId != null && productId != undefined && productId != "") {
+    product.updateProduct(productId, productObj, (results) => { res.status(200).json(results) });
   }
 });
 

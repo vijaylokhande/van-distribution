@@ -25,17 +25,19 @@ router.post('/', function (req, res, next) {
 });
 
 /* UPDATE KEY VAL */
-router.put('/', function (req, res, next) {
+router.put('/:id', function (req, res, next) {
   var keyValObj = req.body;
-  if (keyValObj != null && keyValObj != undefined && keyValObj != "") {
-    appconfig.updateKeyVal(keyValObj, (results) => { res.status(204).json(results) });
+  var id=req.params.id;
+  if (keyValObj != null && keyValObj != undefined && keyValObj != "" &&
+      id != null && id != undefined && id != "") {
+    appconfig.updateKeyVal(id,keyValObj, (results) => { res.status(200).json(results) });
   }
 });
 
 router.delete('/:id', function (req, res, next) {
   var id = req.params.id;
   if (id != null && id != undefined && id != "") {
-    appconfig.deleteKeyVal(id, (results) => { res.status(204).json(results) });
+    appconfig.deleteKeyVal(id, (results) => { res.status(200).json(results) });
   }
 });
 

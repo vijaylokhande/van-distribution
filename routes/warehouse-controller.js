@@ -27,9 +27,9 @@ router.post('/', function (req, res, next) {
 /* UPDATE Warehouse */
 router.put('/:id', function (req, res, next) {
     var warehouseObj = req.body;
-    var id=req.params.id;
+    var id = req.params.id;
     if (warehouseObj != null && warehouseObj != undefined && warehouseObj != "") {
-        warehouse.updateWarehouse(id,warehouseObj, (results) => { res.status(204).json(results) });
+        warehouse.updateWarehouse(id, warehouseObj, (results) => { res.status(204).json(results) });
     }
 });
 

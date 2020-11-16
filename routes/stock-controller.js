@@ -4,14 +4,14 @@ var stock = require('../model/stock-model');
 
 /* GET ALL stock */
 router.get('/', function (req, res, next) {
-  stock.getAllstock((results) => { res.status(200).json(results) });
+  stock.getAllStock((results) => { res.status(200).json(results) });
 });
 
 /* GET stock BY ID */
 router.get('/:id', function (req, res, next) {
   var id = req.params.id;
   if (id != null && id != undefined && id != "") {
-      stock.getstockById(id, (results) => { res.status(200).json(results) });
+    stock.getStockById(id, (results) => { res.status(200).json(results) });
   }
 });
 
@@ -19,15 +19,17 @@ router.get('/:id', function (req, res, next) {
 router.post('/', function (req, res, next) {
   var stockObj = req.body;
   if (stockObj != null && stockObj != undefined && stockObj != "") {
-      stock.addstock(stockObj, (results) => { res.status(201).json(results) });
+    stock.addStock(stockObj, (results) => { res.status(201).json(results) });
   }
 });
 
 /* UPDATE stock */
-router.put('/', function (req, res, next) {
+router.put('/:id', function (req, res, next) {
   var stockObj = req.body;
-  if (stockObj != null && stockObj != undefined && stockObj != "") {
-      stock.updatestock(stockObj, (results) => { res.status(204).json(results) });
+  var skuId=req.params.id;
+  if (stockObj != null && stockObj != undefined && stockObj != "" && 
+      skuId != null && skuId != undefined && skuId != "") {
+    stock.updateStock(skuId,stockObj, (results) => { res.status(204).json(results) });
   }
 });
 
