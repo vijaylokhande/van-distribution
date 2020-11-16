@@ -14,6 +14,8 @@ var warehouseRouter = require('./routes/warehouse-controller');
 var customerRouter = require('./routes/customer-controller');
 var vanRouter = require('./routes/van-controller');
 var shipmentRouter = require('./routes/shipment-controller');
+var shipmentActionRouter = require('./routes/shipment-action-controller');
+var warehouseActionRouter = require('./routes/warehouse-action-controller');
 
 var app = express();
 
@@ -40,6 +42,8 @@ app.use('/api/warehouse', warehouseRouter);
 app.use('/api/customer', customerRouter);
 app.use('/api/van', vanRouter);
 app.use('/api/shipment', shipmentRouter);
+app.use('/api/warehouse-entry', warehouseActionRouter);
+app.use('/api/product-shipment', shipmentActionRouter);
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 

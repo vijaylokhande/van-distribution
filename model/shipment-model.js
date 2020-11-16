@@ -38,28 +38,28 @@ module.exports.addShipment = (shipmentObj, callback) => {
     var datetime = util.getCurrentDateTime();
     var shipId = createShipmentId();
 
-      if (datetime != undefined && datetime != null && shipId != undefined && shipId != null && shipId != "") {
+    if (datetime != undefined && datetime != null && shipId != undefined && shipId != null && shipId != "") {
 
-        var dataArray = [
-          shipId,
-          datetime["date"],
-          datetime["time"],
-          shipmentObj.SHIP_VAN_ID,
-          shipmentObj.SHIP_EMP_ID,
-          shipmentObj.SHIP_WAREHOUSE_ID,
-          shipmentObj.SHIP_STATUS
-        ];
+      var dataArray = [
+        shipId,
+        datetime["date"],
+        datetime["time"],
+        shipmentObj.SHIP_VAN_ID,
+        shipmentObj.SHIP_EMP_ID,
+        shipmentObj.SHIP_WAREHOUSE_ID,
+        shipmentObj.SHIP_STATUS
+      ];
 
-        pool.query(ADD_SHIPMENT, dataArray, (error, results) => {
-          if (error) {
-            throw error
-          }
-           
-            callback(results)
-          
-        });
-      }
-    }  
+      pool.query(ADD_SHIPMENT, dataArray, (error, results) => {
+        if (error) {
+          throw error
+        }
+
+        callback(results)
+
+      });
+    }
+  }
 };
 
 module.exports.updateShipment = (shipmentId, shipmentObj, callback) => {
@@ -69,24 +69,24 @@ module.exports.updateShipment = (shipmentId, shipmentObj, callback) => {
     var datetime = util.getCurrentDateTime();
 
 
-      if (datetime != undefined && datetime != null ) {
+    if (datetime != undefined && datetime != null) {
 
-        var dataArray = [
-          shipmentId,
-          datetime["date"],
-          datetime["time"],
-          shipmentObj.SHIP_VAN_ID,
-          shipmentObj.SHIP_EMP_ID,
-          shipmentObj.SHIP_WAREHOUSE_ID,
-          shipmentObj.SHIP_STATUS
-        ];
-        pool.query(UPDATE_SHIPMENT, dataArray, (error, results) => {
-          if (error) {
-            throw error
-          }           
-            callback(results)
-          
-        });
-      }
-    }  
+      var dataArray = [
+        shipmentId,
+        datetime["date"],
+        datetime["time"],
+        shipmentObj.SHIP_VAN_ID,
+        shipmentObj.SHIP_EMP_ID,
+        shipmentObj.SHIP_WAREHOUSE_ID,
+        shipmentObj.SHIP_STATUS
+      ];
+      pool.query(UPDATE_SHIPMENT, dataArray, (error, results) => {
+        if (error) {
+          throw error
+        }
+        callback(results)
+
+      });
+    }
+  }
 };
