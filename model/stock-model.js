@@ -1,4 +1,4 @@
-var pool = require('./db');
+var pool = require('./db').getPool();
 var _ = require('underscore');
 var util = require('../util/util');
 
@@ -9,20 +9,28 @@ const UPDATE_STOCK = 'UPDATE "WAREHOUSE_PRODUCT_STOCK" SET "WPS_PRODUCT_ID"=$2,"
 
 module.exports.getAllStock = (callback) => {
   pool.query(GET_STOCK, (error, results) => {
+    var responseData={};
     if (error) {
-      throw error
+        responseData["error"]=error.message;
     }
-    callback(results.rows)
+    else{
+        responseData["data"]=results.rows;
+    }
+    callback(responseData)
   });
 };
 
 module.exports.getStockById = (id, callback) => {
   if (id != null && id != undefined && id != "") {
     pool.query(GET_STOCK_BY_ID, [id], (error, results) => {
+      var responseData={};
       if (error) {
-        throw error
+          responseData["error"]=error.message;
       }
-      callback(results.rows)
+      else{
+          responseData["data"]=results.rows;
+      }
+      callback(responseData)
     });
   }
 };
@@ -47,10 +55,14 @@ module.exports.addStock = (stockObj, callback) => {
 
 
       pool.query(ADD_STOCK, dataArray, (error, results) => {
+        var responseData={};
         if (error) {
-          throw error
+            responseData["error"]=error.message;
         }
-        callback(results.rows)
+        else{
+            responseData["data"]=results.rows;
+        }
+        callback(responseData)
       });
     }
   }
@@ -75,10 +87,14 @@ module.exports.updateStock = (skuId, stockObj, callback) => {
       ];
 
       pool.query(UPDATE_STOCK, dataArray, (error, results) => {
+        var responseData={};
         if (error) {
-          throw error
+            responseData["error"]=error.message;
         }
-        callback(results.rows)
+        else{
+            responseData["data"]=results.rows;
+        }
+        callback(responseData)
       });
     }
   }

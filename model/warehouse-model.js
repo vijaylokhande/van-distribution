@@ -1,4 +1,4 @@
-var pool = require('./db');
+var pool = require('./db').getPool();
 var _ = require('underscore');
 
 const GET_WAREHOUSE = 'SELECT * FROM "WAREHOUSE_DETAILS"';
@@ -8,20 +8,28 @@ const UPDATE_WAREHOUSE = 'UPDATE "WAREHOUSE_DETAILS" SET "WAREHOUSE_NAME"=$2,"WA
 
 module.exports.getAllWarehouse = (callback) => {
   pool.query(GET_WAREHOUSE, (error, results) => {
+    var responseData={};
     if (error) {
-      throw error
+        responseData["error"]=error.message;
     }
-    callback(results.rows)
+    else{
+        responseData["data"]=results.rows;
+    }
+    callback(responseData)
   });
 };
 
 module.exports.getWarehouseById = (id, callback) => {
   if (id != null && id != undefined && id != "") {
     pool.query(GET_WAREHOUSE_BY_ID, [id], (error, results) => {
+      var responseData={};
       if (error) {
-        throw error
+          responseData["error"]=error.message;
       }
-      callback(results.rows)
+      else{
+          responseData["data"]=results.rows;
+      }
+      callback(responseData)
     });
   }
 };
@@ -29,10 +37,14 @@ module.exports.getWarehouseById = (id, callback) => {
 module.exports.addWarehouse = (warehouseObj, callback) => {
   if (warehouseObj != null && warehouseObj != undefined && warehouseObj != "") {
     pool.query(ADD_WAREHOUSE, [warehouseObj.WAREHOUSE_NAME,warehouseObj.WAREHOUSE_ADDRESS,warehouseObj.WAREHOUSE_CONTACT,warehouseObj.ACTIVE_STATUS], (error, results) => {
+      var responseData={};
       if (error) {
-        throw error
+          responseData["error"]=error.message;
       }
-      callback(results.rows)
+      else{
+          responseData["data"]=results.rows;
+      }
+      callback(responseData)
     });
   }
 };
@@ -40,10 +52,14 @@ module.exports.addWarehouse = (warehouseObj, callback) => {
 module.exports.updateWarehouse = (id,warehouseObj, callback) => {
   if (warehouseObj != null && warehouseObj != undefined && warehouseObj != "") {
     pool.query(UPDATE_WAREHOUSE, [id,warehouseObj.WAREHOUSE_NAME,warehouseObj.WAREHOUSE_ADDRESS,warehouseObj.WAREHOUSE_CONTACT,warehouseObj.ACTIVE_STATUS], (error, results) => {
+      var responseData={};
       if (error) {
-        throw error
+          responseData["error"]=error.message;
       }
-      callback(results.rows)
+      else{
+          responseData["data"]=results.rows;
+      }
+      callback(responseData)
     });
   }
 };

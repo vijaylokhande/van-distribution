@@ -1,4 +1,4 @@
-var pool = require('./db');
+var pool = require('./db').getPool();
 var _ = require('underscore');
 
 const GET_EMPLOYEE = 'SELECT * FROM "EMPLOYEE"';
@@ -8,20 +8,28 @@ const UPDATE_EMPLOYEE = 'UPDATE "EMPLOYEE" SET "EMP_NAME"=$2,"EMP_CONTACT"=$3,"E
 
 module.exports.getAllEmployee = (callback) => {
   pool.query(GET_EMPLOYEE, (error, results) => {
+    var responseData={};
     if (error) {
-      throw error
+        responseData["error"]=error.message;
     }
-    callback(results.rows)
+    else{
+        responseData["data"]=results.rows;
+    }
+    callback(responseData)
   });
 };
 
 module.exports.getEmployeeById = (id, callback) => {
   if (id != null && id != undefined && id != "") {
     pool.query(GET_EMPLOYEE_BY_ID, [id], (error, results) => {
+      var responseData={};
       if (error) {
-        throw error
+          responseData["error"]=error.message;
       }
-      callback(results.rows)
+      else{
+          responseData["data"]=results.rows;
+      }
+      callback(responseData)
     });
   }
 };
@@ -40,10 +48,14 @@ module.exports.addEmployee = (empObj, callback) => {
                   empObj.ACTIVE_STATUS];
 
     pool.query(ADD_EMPLOYEE,dataArray , (error, results) => {
+      var responseData={};
       if (error) {
-        throw error
+          responseData["error"]=error.message;
       }
-      callback(results.rows)
+      else{
+          responseData["data"]=results.rows;
+      }
+      callback(responseData)
     });
   }
 };
@@ -64,10 +76,14 @@ module.exports.updateEmployee = (empId,empObj, callback) => {
                   empObj.ACTIVE_STATUS];
 
     pool.query(UPDATE_EMPLOYEE, dataArray, (error, results) => {
+      var responseData={};
       if (error) {
-        throw error
+          responseData["error"]=error.message;
       }
-      callback(results.rows)
+      else{
+          responseData["data"]=results.rows;
+      }
+      callback(responseData)
     });
   }
 };

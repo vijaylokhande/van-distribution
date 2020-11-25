@@ -9,9 +9,15 @@ const pool = new Pool({
   port: constants.db.DB_HOST_PORT
 });
 
+module.exports.dbConnect=()=>{
 pool.connect(function (err) {
   if (err) throw err;
   console.log("Connected!");
 });
+};
 
-module.exports = pool;
+module.exports.getPool=()=>{
+  return pool;
+};
+
+/* module.exports = pool; */

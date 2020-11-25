@@ -1,4 +1,4 @@
-var pool = require('./db');
+var pool = require('./db').getPool();
 var _ = require('underscore');
 var util = require('../util/util');
 
@@ -14,20 +14,28 @@ createShipmentId = () => {
 
 module.exports.getAllShipment = (callback) => {
   pool.query(GET_SHIPMENT, (error, results) => {
+    var responseData={};
     if (error) {
-      throw error
+        responseData["error"]=error.message;
     }
-    callback(results.rows)
+    else{
+        responseData["data"]=results.rows;
+    }
+    callback(responseData)
   });
 };
 
 module.exports.getShipmentById = (id, callback) => {
   if (id != null && id != undefined && id != "") {
     pool.query(GET_SHIPMENT_BY_ID, [id], (error, results) => {
+      var responseData={};
       if (error) {
-        throw error
+          responseData["error"]=error.message;
       }
-      callback(results.rows)
+      else{
+          responseData["data"]=results.rows;
+      }
+      callback(responseData)
     });
   }
 };
@@ -51,11 +59,14 @@ module.exports.addShipment = (shipmentObj, callback) => {
       ];
 
       pool.query(ADD_SHIPMENT, dataArray, (error, results) => {
+        var responseData={};
         if (error) {
-          throw error
+            responseData["error"]=error.message;
         }
-
-        callback(results)
+        else{
+            responseData["data"]=results.rows;
+        }
+        callback(responseData)
 
       });
     }
@@ -65,12 +76,8 @@ module.exports.addShipment = (shipmentObj, callback) => {
 module.exports.updateShipment = (shipmentId, shipmentObj, callback) => {
   if (shipmentObj != null && shipmentObj != undefined && shipmentObj != "" &&
     shipmentId != null && shipmentId != undefined && shipmentId != "") {
-
     var datetime = util.getCurrentDateTime();
-
-
     if (datetime != undefined && datetime != null) {
-
       var dataArray = [
         shipmentId,
         datetime["date"],
@@ -81,11 +88,14 @@ module.exports.updateShipment = (shipmentId, shipmentObj, callback) => {
         shipmentObj.SHIP_STATUS
       ];
       pool.query(UPDATE_SHIPMENT, dataArray, (error, results) => {
+        var responseData={};
         if (error) {
-          throw error
+            responseData["error"]=error.message;
         }
-        callback(results)
-
+        else{
+            responseData["data"]=results.rows;
+        }
+        callback(responseData)
       });
     }
   }

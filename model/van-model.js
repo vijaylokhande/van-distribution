@@ -1,4 +1,4 @@
-var pool = require('./db');
+var pool = require('./db').getPool();
 var _ = require('underscore');
 
 const GET_VAN = 'SELECT * FROM "VAN_DETAILS"';
@@ -9,20 +9,28 @@ const UPDATE_VAN = 'UPDATE "VAN_DETAILS" SET "VAN_NUMBER"=$2,"VAN_NAME"=$3,"ACTI
 
 module.exports.getAllVan = (callback) => {
   pool.query(GET_VAN, (error, results) => {
+    var responseData={};
     if (error) {
-      throw error
+        responseData["error"]=error.message;
     }
-    callback(results.rows)
+    else{
+        responseData["data"]=results.rows;
+    }
+    callback(responseData)
   });
 };
 
 module.exports.getVanById = (id, callback) => {
   if (id != null && id != undefined && id != "") {
     pool.query(GET_VAN_BY_ID, [id], (error, results) => {
+      var responseData={};
       if (error) {
-        throw error
+          responseData["error"]=error.message;
       }
-      callback(results.rows)
+      else{
+          responseData["data"]=results.rows;
+      }
+      callback(responseData)
     });
   }
 };
@@ -37,10 +45,14 @@ module.exports.addVan = (vanObj, callback) => {
     ];
 
     pool.query(ADD_VAN, dataArray, (error, results) => {
+      var responseData={};
       if (error) {
-        throw error
+          responseData["error"]=error.message;
       }
-      callback(results.rows)
+      else{
+          responseData["data"]=results.rows;
+      }
+      callback(responseData)
     });
   }
 };
@@ -55,10 +67,14 @@ module.exports.updateVan = (vanId,vanObj, callback) => {
       vanObj.ACTIVE_STATUS
     ];
     pool.query(UPDATE_VAN, dataArray, (error, results) => {
+      var responseData={};
       if (error) {
-        throw error
+          responseData["error"]=error.message;
       }
-      callback(results.rows)
+      else{
+          responseData["data"]=results.rows;
+      }
+      callback(responseData)
     });
   }
 };

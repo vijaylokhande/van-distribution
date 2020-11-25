@@ -1,4 +1,4 @@
-var pool = require('./db');
+var pool = require('./db').getPool();
 var _ = require('underscore');
 
 const GET_ALL_PRODUCT = 'SELECT * FROM "PRODUCT_DETAILS"';
@@ -12,20 +12,28 @@ const UPDATE_PRODUCT = 'UPDATE "PRODUCT_DETAILS" SET ' +
 
 module.exports.getAllProduct = (callback) => {
   pool.query(GET_ALL_PRODUCT, (error, results) => {
+    var responseData={};
     if (error) {
-      throw error
+        responseData["error"]=error.message;
     }
-    callback(results.rows)
+    else{
+        responseData["data"]=results.rows;
+    }
+    callback(responseData)
   });
 };
 
 module.exports.getProductById = (id, callback) => {
   if (id != null && id != undefined && id != "") {
     pool.query(GET_PRODUCT_BY_ID, [id], (error, results) => {
+      var responseData={};
       if (error) {
-        throw error
+          responseData["error"]=error.message;
       }
-      callback(results.rows)
+      else{
+          responseData["data"]=results.rows;
+      }
+      callback(responseData)
     });
   }
 };
@@ -48,10 +56,14 @@ module.exports.addProduct = (productObj, callback) => {
       JSON.stringify(productObj.PRODUCT_RATE)
     ];
     pool.query(ADD_PRODUCT, dataArray, (error, results) => {
+      var responseData={};
       if (error) {
-        throw error
+          responseData["error"]=error.message;
       }
-      callback(results.rows)
+      else{
+          responseData["data"]=results.rows;
+      }
+      callback(responseData)
     });
   }
 };
@@ -77,11 +89,14 @@ module.exports.updateProduct = (productId, productObj, callback) => {
     ];
 
     pool.query(UPDATE_PRODUCT, dataArray, (error, results) => {
+      var responseData={};
       if (error) {
-        throw error
+          responseData["error"]=error.message;
       }
-      console.log(results.rows);
-      callback(results.rows)
+      else{
+          responseData["data"]=results.rows;
+      }
+      callback(responseData)
     });
   }
 };

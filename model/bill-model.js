@@ -1,4 +1,4 @@
-var pool = require('./db');
+var pool = require('./db').getPool();
 var _ = require('underscore');
 
 const GET_BILL = 'SELECT * FROM "APP_CONFIG"';
@@ -8,20 +8,28 @@ const UPDATE_BILL = 'SELECT * FROM "APP_CONFIG" WHERE "PROPERTY_TYPE"=$1';
 
 module.exports.getAllBill = (callback) => {
   pool.query(GET_BILL, (error, results) => {
+    var responseData={};
     if (error) {
-      throw error
+        responseData["error"]=error.message;
     }
-    callback(results.rows)
+    else{
+        responseData["data"]=results.rows;
+    }
+    callback(responseData)
   });
 };
 
 module.exports.getBillById = (id, callback) => {
   if (id != null && id != undefined && id != "") {
     pool.query(GET_BILL_BY_ID, [id], (error, results) => {
+      var responseData={};
       if (error) {
-        throw error
+          responseData["error"]=error.message;
       }
-      callback(results.rows)
+      else{
+          responseData["data"]=results.rows;
+      }
+      callback(responseData)
     });
   }
 };
@@ -29,10 +37,14 @@ module.exports.getBillById = (id, callback) => {
 module.exports.addBill = (billObj, callback) => {
   if (billObj != null && billObj != undefined && billObj != "") {
     pool.query(ADD_BILL, [billObj], (error, results) => {
+      var responseData={};
       if (error) {
-        throw error
+          responseData["error"]=error.message;
       }
-      callback(results.rows)
+      else{
+          responseData["data"]=results.rows;
+      }
+      callback(responseData)
     });
   }
 };
@@ -40,10 +52,14 @@ module.exports.addBill = (billObj, callback) => {
 module.exports.updateBill = (billObj, callback) => {
   if (billObj != null && billObj != undefined && billObj != "") {
     pool.query(UPDATE_BILL, [billObj], (error, results) => {
+      var responseData={};
       if (error) {
-        throw error
+          responseData["error"]=error.message;
       }
-      callback(results.rows)
+      else{
+          responseData["data"]=results.rows;
+      }
+      callback(responseData)
     });
   }
 };

@@ -1,4 +1,4 @@
-var pool = require('./db');
+var pool = require('./db').getPool();
 var _ = require('underscore');
 
 const GET_ALL_CUSTOMER = 'SELECT * FROM "CUSTOMER_DETAILS"';
@@ -12,20 +12,28 @@ const UPDATE_CUSTOMER = 'UPDATE "CUSTOMER_DETAILS" SET ' +
 
 module.exports.getAllCustomer = (callback) => {
   pool.query(GET_ALL_CUSTOMER, (error, results) => {
+    var responseData={};
     if (error) {
-      throw error
+        responseData["error"]=error.message;
     }
-    callback(results.rows)
+    else{
+        responseData["data"]=results.rows;
+    }
+    callback(responseData)
   });
 };
 
 module.exports.getCustomerById = (id, callback) => {
   if (id != null && id != undefined && id != "") {
     pool.query(GET_CUSTOMER_BY_ID, [id], (error, results) => {
+      var responseData={};
       if (error) {
-        throw error
+          responseData["error"]=error.message;
       }
-      callback(results.rows)
+      else{
+          responseData["data"]=results.rows;
+      }
+      callback(responseData)
     });
   }
 };
@@ -44,10 +52,14 @@ module.exports.addCustomer = (customerObj, callback) => {
       customerObj.ACTIVE_STATUS
     ];
     pool.query(ADD_CUSTOMER, dataArray, (error, results) => {
+      var responseData={};
       if (error) {
-        throw error
+          responseData["error"]=error.message;
       }
-      callback(results.rows)
+      else{
+          responseData["data"]=results.rows;
+      }
+      callback(responseData)
     });
   }
 };
@@ -69,10 +81,14 @@ module.exports.updateCustomer = (customerId, customerObj, callback) => {
     ];
 
     pool.query(UPDATE_CUSTOMER, dataArray, (error, results) => {
+      var responseData={};
       if (error) {
-        throw error
+          responseData["error"]=error.message;
       }
-      callback(results.rows)
+      else{
+          responseData["data"]=results.rows;
+      }
+      callback(responseData)
     });
   }
 };

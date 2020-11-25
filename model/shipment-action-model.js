@@ -1,4 +1,4 @@
-var pool = require('./db');
+var pool = require('./db').getPool();
 var _ = require('underscore');
 var util = require('../util/util');
 
@@ -14,20 +14,28 @@ createProductShipmentId = () => {
 
 module.exports.getAllProductShipment = (callback) => {
   pool.query(GET_PRODUCT_SHIPMENT, (error, results) => {
+    var responseData={};
     if (error) {
-      throw error
+        responseData["error"]=error.message;
     }
-    callback(results.rows)
+    else{
+        responseData["data"]=results.rows;
+    }
+    callback(responseData)
   });
 };
 
 module.exports.getProductShipmentById = (id, callback) => {
   if (id != null && id != undefined && id != "") {
     pool.query(GET_PRODUCT_SHIPMENT_BY_ID, [id], (error, results) => {
+      var responseData={};
       if (error) {
-        throw error
+          responseData["error"]=error.message;
       }
-      callback(results.rows)
+      else{
+          responseData["data"]=results.rows;
+      }
+      callback(responseData)
     });
   }
 };
@@ -52,11 +60,14 @@ module.exports.addProductShipment = (shipmentObj, callback) => {
       ];
 
       pool.query(ADD_PRODUCT_SHIPMENT, dataArray, (error, results) => {
+        var responseData={};
         if (error) {
-          throw error
+            responseData["error"]=error.message;
         }
-
-        callback(results)
+        else{
+            responseData["data"]=results.rows;
+        }
+        callback(responseData)
 
       });
     }
@@ -81,10 +92,14 @@ module.exports.updateProductShipment = (psId, shipmentObj, callback) => {
         shipmentObj.PS_STATUS
       ];
       pool.query(UPDATE_PRODUCT_SHIPMENT, dataArray, (error, results) => {
+        var responseData={};
         if (error) {
-          throw error
+            responseData["error"]=error.message;
         }
-        callback(results)
+        else{
+            responseData["data"]=results.rows;
+        }
+        callback(responseData)
 
       });
     }

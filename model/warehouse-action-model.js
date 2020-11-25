@@ -1,4 +1,4 @@
-var pool = require('./db');
+var pool = require('./db').getPool();
 var _ = require('underscore');
 var util = require('../util/util');
 
@@ -13,20 +13,28 @@ createWPEID = () => {
 
 module.exports.getWarehouseProductList = (callback) => {
   pool.query(GET_WAREHOUSE_PRODUCT_ENTRY, (error, results) => {
+    var responseData={};
     if (error) {
-      throw error
+        responseData["error"]=error.message;
     }
-    callback(results.rows)
+    else{
+        responseData["data"]=results.rows;
+    }
+    callback(responseData)
   });
 };
 
 module.exports.getWPEById = (id, callback) => {
   if (id != null && id != undefined && id != "") {
     pool.query(GET_WAREHOUSE_PRODUCT_ENTRY_BY_ID, [id], (error, results) => {
+      var responseData={};
       if (error) {
-        throw error
+          responseData["error"]=error.message;
       }
-      callback(results.rows)
+      else{
+          responseData["data"]=results.rows;
+      }
+      callback(responseData)
     });
   }
 };
@@ -54,10 +62,14 @@ module.exports.addProductToWarehouse = (wpeObj, callback) => {
 
 
     pool.query(ADD_WAREHOUSE_PRODUCT_ENTRY,dataArray, (error, results) => {
+      var responseData={};
       if (error) {
-        throw error
+          responseData["error"]=error.message;
       }
-      callback(results.rows)
+      else{
+          responseData["data"]=results.rows;
+      }
+      callback(responseData)
     });
   }
 }
@@ -77,10 +89,14 @@ module.exports.updateWarehouseProduct = (wpeId,wpeObj, callback) => {
       wpeObj.ENTRY_STATUS
     ];
     pool.query(UPDATE_WAREHOUSE_PRODUCT_ENTRY, dataArray, (error, results) => {
+      var responseData={};
       if (error) {
-        throw error
+          responseData["error"]=error.message;
       }
-      callback(results.rows)
+      else{
+          responseData["data"]=results.rows;
+      }
+      callback(responseData)
     });
   }
 };

@@ -3,7 +3,13 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+var db=require('./model/db');
+var url=require('./constant/constants').url;
 
+/* db connection */
+db.dbConnect();
+
+/* COntrollers */
 var indexRouter = require('./routes/index');
 var userRouter = require('./routes/user-controller');
 var productRouter = require('./routes/product-controller');
@@ -32,18 +38,20 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', indexRouter);
-app.use('/api/user', userRouter);
-app.use('/api/product', productRouter);
-app.use('/api/employee', employeeRouter);
-app.use('/api/stock', stockRouter);
-app.use('/api/appconfig', appconfigRouter);
-app.use('/api/warehouse', warehouseRouter);
-app.use('/api/customer', customerRouter);
-app.use('/api/van', vanRouter);
-app.use('/api/shipment', shipmentRouter);
-app.use('/api/warehouse-entry', warehouseActionRouter);
-app.use('/api/product-shipment', shipmentActionRouter);
+
+// controller mapping
+app.use(url.INDEX_CONTROLLER, indexRouter);
+app.use(url.USER_CONTROLLER, userRouter);
+app.use(url.PRODUCT_CONTROLLER, productRouter);
+app.use(url.EMPLOYEE_CONTROLLER, employeeRouter);
+app.use(url.STOCK_CONTROLLER, stockRouter);
+app.use(url.APPCONFIG_CONTROLLER, appconfigRouter);
+app.use(url.WAREHOUSE_CONTROLLER, warehouseRouter);
+app.use(url.CUSTOMER_CONTROLLER, customerRouter);
+app.use(url.VAN_CONTROLLER, vanRouter);
+app.use(url.SHIPMENT_CONTROLLER, shipmentRouter);
+app.use(url.WAREHOUSE_ENTRY_CONTROLLER, warehouseActionRouter);
+app.use(url.PRODUCT_SHIPMENT_CONTROLLER, shipmentActionRouter);
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
