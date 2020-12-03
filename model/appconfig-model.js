@@ -56,6 +56,7 @@ module.exports.addKeyVal = (keyValObj, callback) => {
 module.exports.updateKeyVal = (id,keyValObj, callback) => {
     if (keyValObj != null && keyValObj != undefined && keyValObj != "" && 
         id != null && id != undefined && id != "") {
+        
         pool.query(UPDATE_KEY_VAL, [id,keyValObj.PROPERTY_TYPE,keyValObj.PROPERTY_VALUE], (error, results) => {
             var responseData={};
             if (error) {
