@@ -7,6 +7,11 @@ var logger = require('morgan');
 var db=require('./model/db');
 var url=require('./constant/constants').url;
 
+
+
+const bodyParser = require('body-parser');
+const errorHandler = require('./_helpers/error-handler');
+
 /* db connection */
 db.dbConnect();
 
@@ -39,6 +44,9 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 app.use(cors());
 // controller mapping
 app.use(url.INDEX_CONTROLLER, indexRouter);
@@ -55,6 +63,8 @@ app.use(url.WAREHOUSE_ENTRY_CONTROLLER, warehouseActionRouter);
 app.use(url.PRODUCT_SHIPMENT_CONTROLLER, shipmentActionRouter);
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+
+app.use(errorHandler)
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
